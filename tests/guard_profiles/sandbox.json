@@ -1,0 +1,3 @@
+{"schema": "agent-compute-guard-profile/1", "name": "sandbox-test",
+ "budget_gb": 12.0, "floor_gb": 8.0, "container_cpus": 10,
+ "runlog_tag": null, "disk_floor_gb": 1.0}

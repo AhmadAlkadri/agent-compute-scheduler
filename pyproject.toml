@@ -1,0 +1,16 @@
+[project]
+name = "agent-compute-scheduler"
+# Keep in step with src/agent_compute/__init__.py (tests/test_packaging.py checks it);
+# there is no [build-system]: the tool is run from a checkout or installed by install.py.
+version = "0.3.0"
+description = "Agent-only admission for heavy jobs on one or two hosts: one heavy slot per host, workload identity and cleanup verification, durable block on an ambiguous end (Pueue + an internal guard)"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = []            # the tool itself is standard library only
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# test profiles: tests/conftest.py (standard; legacy with ACS_TEST_LEGACY_GUARD)

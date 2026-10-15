@@ -1,0 +1,105 @@
+# Synthetic schema-2 machine config, host "alpha": what `agent-compute config
+# migrate` writes for tests/fixtures/config-v1/sample-a.toml, with the values
+# the legacy guard home forced by configuration (the lock stays in
+# ~/.smc-guard, the legacy marker and workload names are kept), a dedicated
+# host budget, a second host over ssh and three projects (one with records in
+# its own tree). Neutral names and paths.
+schema = "agent-compute-config/2"
+host = "alpha"
+state_dir = "~/.local/state/agent-compute"      # local disk, not cloud-synced
+python = "/opt/homebrew/bin/python3"            # runs the runner and the guard
+
+[backend]
+# The values versions before 0.2.0 applied implicitly, kept by
+# configuration: the lock stays shared with direct guard.py callers in
+# ~/.smc-guard, and workloads check SMC_GUARD_JOB and the legacy workload
+# variable names.
+guard_home = "~/.smc-guard"
+marker_aliases = ["SMC_GUARD_JOB"]
+legacy_workload_env = true
+kind = "acs-guard"             # the internal guard, the only backend
+# The pinned sha256 of the internal guard engine of the installed version.
+# `agent-compute pin-backend --evidence <committed suite output>
+# --authorized-by "<who, when, what>"`.
+sha256 = "d817fd4f02ac8c20b295e217915ffd338cc12952bfa1300209559816ba47b295"
+# Declaration: this host is dedicated compute; the per-job budget (a ceiling,
+# never an admission test) for every project, at most the host's RAM; the
+# floor still applies.
+dedicated_budget_gb = 48
+lock_wait_max_s = 43200        # a dispatched job waits at most 12 h for admission
+admission_retry_s = 120        # first re-attempt of a memory/disk refusal
+
+# The machine profile (the retired guard's numbers for this host, kept; `config
+# init` would derive 8 / 16 / 10 for a fresh 64 GB, 12-core host)
+[backend.profile]
+name = "alpha"
+budget_gb = 12
+floor_gb = 8
+container_cpus = 10
+runlog_tag = ""
+
+[queue]
+enabled = true
+pueue = "/opt/homebrew/bin/pueue"
+pueued = "/opt/homebrew/bin/pueued"
+group = "acs-heavy"            # the one shared heavy group; parallelism 1
+
+[hosts.beta]                   # explicit `--host beta` only; never automatic
+transport = "ssh-wsl"
+ssh = "beta"                   # an existing ssh alias (not modified)
+distro = "dev"
+agent_compute = "/srv/example/.local/bin/agent-compute"
+
+[projects.project-a]
+roots = ["~/work/project-a",                   # the project key is kept (job records)
+         "~/work/project-a-*"]
+case_prefix = ""                                # keeps the measured baseline keys
+# The project's own guard records, in its tree: an explicit opt-in (D3),
+# kept by the migration; `inputs` excludes docs/ so the guard's lines never
+# change the fingerprint of the project's queued jobs.
+records_in_tree = true
+runlog = "docs/runlog.md"
+baseline = "docs/perf/baseline.json"
+inputs = [".", ":(exclude)docs", ":(exclude)spec", ":(exclude)outputs",
+          ":(exclude)site", ":(exclude)review-site", ":(exclude)artifacts",
+          ":(exclude)node_modules", ":(exclude)scratch", ":(exclude).agents"]
+env_passthrough = ["SMC_SLICE"]
+max_timeout_min = 1440
+max_threads = 10
+containers = ["step-a"]
+container_workdir = "/workspaces/project-a"
+container_provenance = ".sync_provenance.json"
+reserve_detector = "smc-ladder"        # the project's ladder configs declare reserves
+container_limits = ["step-a"]     # the guard may docker-update its container
+
+[projects.project-b]
+roots = ["~/work/project-b",
+         "~/work/project-b-*"]
+case_prefix = "pb."
+# Records stay out of this project's tree (its policy forbids dirtying other
+# trees and it has no runlog yet); status reports these paths.
+runlog = "{state}/projects/{project}/runlog-{host}.md"
+baseline = "{state}/projects/{project}/baseline-{host}.json"
+inputs = [".", ":(exclude)outputs", ":(exclude)manuscript", ":(exclude)docs",
+          ":(exclude).agents", ":(exclude)legacy"]
+env_passthrough = []
+max_timeout_min = 60           # ACS ceiling; the project's own policy still governs
+max_threads = 4
+containers = ["pb-solver"]
+container_workdir = "/workspaces/project-b"
+reserve_detector = "smc-ladder"        # as configured; "none" is the default
+container_limits = ["pb-solver"]
+
+[projects.project-c]
+roots = ["~/work/project-c",
+         "~/work/project-c-*"]
+case_prefix = "pc."
+runlog = "{state}/projects/{project}/runlog-{host}.md"
+baseline = "{state}/projects/{project}/baseline-{host}.json"
+inputs = [".", ":(exclude)spec", ":(exclude).agents", ":(exclude)runs",
+          ":(exclude)reference"]
+env_passthrough = []
+max_timeout_min = 480
+max_threads = 8
+containers = []
+reserve_detector = "smc-ladder"        # as configured; "none" is the default

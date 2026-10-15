@@ -1,0 +1,32 @@
+# synthetic gate run (Linux host, with Docker, legacy profile): the skip lines, the short summary and the final line keep the shape of a real `pytest -v -rs` run; passing tests are elided; names and paths are neutral
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /srv/example/.venv/bin/python
+rootdir: /srv/example/checkout
+collecting ... collected 1142 items
+
+tests/test_acs_guard_backend.py::test_acs_guard_config_loads_without_filling_defaults PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[kind = "acs-guard"-kind = "internal"-backend.kind must be] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[[backend.profile]\n-[backend.unused]\n-unknown keys ['unused']] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[container_cpus =-cpus =-unknown keys ['cpus']] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[kind = "acs-guard"-kind = "internal"-backend.kind must be] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[[backend.profile]\n-[backend.unused]\n-unknown keys ['unused']] PASSED [  0%]
+tests/test_host_identity.py::test_e2_legacy_eb369eb937_identity_is_alive_from_any_tz[None] SKIPPED [ 51%]
+tests/test_host_identity.py::test_e2_legacy_eb369eb937_identity_is_alive_from_any_tz[UTC] SKIPPED [ 51%]
+tests/test_host_identity.py::test_e2_legacy_eb369eb937_identity_is_alive_from_any_tz[Europe/Paris] SKIPPED [ 51%]
+tests/test_host_identity.py::test_legacy_lstart_recycled_only_beyond_any_utc_offset SKIPPED [ 51%]
+tests/test_host_identity.py::test_e4_start_epoch_is_exact_in_the_dst_fall_back_hour SKIPPED [ 51%]
+tests/test_host_identity.py::test_e4_legacy_dst_record_is_alive_and_never_recycled SKIPPED [ 51%]
+tests/test_host_identity.py::test_e4_capture_keeps_the_exact_start_in_the_dst_hour SKIPPED [ 51%]
+tests/test_host_identity.py::test_e3_reconcile_with_tz_keeps_the_block_of_a_live_workload SKIPPED [ 52%]
+tests/test_host_identity.py::test_identity_record_shape_on_macos SKIPPED [ 55%]
+
+=========================== short test summary info ============================
+SKIPPED [3] tests/test_host_identity.py:160: the lstart form is macOS-only
+SKIPPED [1] tests/test_host_identity.py:251: the lstart form is macOS-only
+SKIPPED [1] tests/test_host_identity.py:341: exercises the macOS ps path
+SKIPPED [1] tests/test_host_identity.py:359: exercises the macOS ps path
+SKIPPED [1] tests/test_host_identity.py:386: exercises the macOS ps path
+SKIPPED [1] tests/test_host_identity.py:473: the TZ-rendered discriminator is macOS
+SKIPPED [1] tests/test_host_identity.py:914: the lstart form is macOS-only
+================= 1133 passed, 9 skipped in 1699.63s (0:28:19) =================
+EXIT 0

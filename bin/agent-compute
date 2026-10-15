@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+"""Launcher: runs the agent_compute package that sits beside this file."""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+from agent_compute.cli import main  # noqa: E402
+
+sys.exit(main())

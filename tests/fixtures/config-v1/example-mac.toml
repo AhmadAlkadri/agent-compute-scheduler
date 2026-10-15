@@ -1,0 +1,89 @@
+# Synthetic pre-0.2.0 (schema 1) machine config for host "alpha" with the
+# retired external-guard backend (kind "smc-guard"), shaped like the first
+# example configs of that backend: a profile name, a pinned guard, a second
+# host over ssh and two projects.  Neutral names and paths.
+schema = "agent-compute-config/1"
+host = "alpha"
+state_dir = "~/.local/state/agent-compute"      # local disk, not cloud-synced
+python = "/opt/homebrew/bin/python3"            # runs the runner and the guard
+
+[backend]
+kind = "smc-guard"
+# The existing external guard, run in place (not copied, not imported).
+guard = "~/tools/guard.py"
+# Verified fingerprint: ACS refuses a guard whose content differs.
+# Re-verify (tests/ against the new guard, output committed),
+# then `agent-compute pin-backend --evidence <that output>`.
+sha256 = "f53ddde230076d2c7ef63e0bad5ed86d6162c0bb38fb06f1034e856fbfc48147"
+profile = "alpha"
+# Declaration: this host is dedicated compute. Raises the host
+# budget the guard admits and kills at (profile default 12 GB) for EVERY
+# project, never above 48 GB; the guard's available-memory floor still
+# applies. Leave unset on hosts that are not dedicated (e.g. a small sidecar).
+# dedicated_budget_gb = 48
+lock_wait_max_s = 43200        # a dispatched job waits at most 12 h for admission
+admission_retry_s = 120        # first re-attempt of a memory/disk refusal
+admission_retry_max_s = 900    # then doubling up to this        # re-attempt memory/disk refusals this often
+# No guard_home: the guard's own ~/.smc-guard/lock is the lock.
+
+# --- Backend acs-guard (the internal guard that replaced it) ------
+# The cutover edit, on an idle host, after installing the internal guard:
+#  1. delete `profile = "..."` above (a string cannot coexist with the
+#     [backend.profile] table) and add the table with guard.py's numbers;
+#  2. add `reserve_detector` to every project ("smc-ladder" for project-a,
+#     "none" otherwise) and `container_limits` to every project with
+#     containers (today's behaviour: all of them);
+#  3. `agent-compute pin-backend --backend acs-guard --evidence <file>`
+#     switches `kind` and pins the engine sha256 (it edits nothing else).
+# [backend.profile]
+# name = "alpha"
+# budget_gb = 12
+# floor_gb = 8
+# container_cpus = 10
+# runlog_tag = ""               # none (TOML has no null)
+# and in [projects.project-a]:
+# reserve_detector = "smc-ladder"
+# container_limits = ["step-a"]
+
+[queue]
+enabled = true
+pueue = "/opt/homebrew/bin/pueue"
+pueued = "/opt/homebrew/bin/pueued"
+group = "acs-heavy"            # the one shared heavy group; parallelism 1
+
+[hosts.beta]                   # explicit `--host beta` only; never automatic
+transport = "ssh-wsl"
+ssh = "beta"                 # an existing ssh alias (not modified)
+distro = "dev"
+agent_compute = "/srv/example/.local/bin/agent-compute"
+
+[projects.project-a]
+roots = ["~/work/project-a",
+         "~/work/project-a-*"]
+case_prefix = ""                                # keeps the measured baseline keys
+runlog = "docs/runlog.md"                       # the project's own guard records
+baseline = "docs/perf/baseline.json"
+inputs = [".", ":(exclude)docs", ":(exclude)spec", ":(exclude)outputs",
+          ":(exclude)site", ":(exclude)review-site", ":(exclude)artifacts",
+          ":(exclude)node_modules", ":(exclude)scratch", ":(exclude).agents"]
+env_passthrough = ["SMC_SLICE"]
+max_timeout_min = 1440
+max_threads = 10
+containers = ["step-a"]
+container_workdir = "/workspaces/project-a"
+container_provenance = ".sync_provenance.json"
+
+[projects.project-b]
+roots = ["~/work/project-b",
+         "~/work/project-b-*"]
+case_prefix = "pb."
+# Records stay out of this project's tree (its policy forbids dirtying other
+# trees and it has no runlog yet); status reports these paths.
+runlog = "{state}/projects/{project}/runlog-{host}.md"
+baseline = "{state}/projects/{project}/baseline-{host}.json"
+inputs = [".", ":(exclude)outputs", ":(exclude)manuscript", ":(exclude)docs",
+          ":(exclude).agents", ":(exclude)legacy"]
+env_passthrough = []
+max_timeout_min = 60           # ACS ceiling; the project's own policy still governs
+max_threads = 4
+containers = []                # a container will be added later

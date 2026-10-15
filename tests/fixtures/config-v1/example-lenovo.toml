@@ -1,0 +1,56 @@
+# Synthetic pre-0.2.0 (schema 1) machine config for host "beta" with the
+# retired external-guard backend (kind "smc-guard"): a small WSL2 sidecar VM.
+# Neutral names and paths.
+schema = "agent-compute-config/1"
+host = "beta"
+state_dir = "~/.local/state/agent-compute"      # WSL ext4, not the Windows drive
+python = "/usr/bin/python3"
+
+[backend]
+kind = "smc-guard"
+guard = "~/tools/guard.py"
+sha256 = "f53ddde230076d2c7ef63e0bad5ed86d6162c0bb38fb06f1034e856fbfc48147"
+profile = "beta"
+lock_wait_max_s = 43200
+admission_retry_s = 120        # first re-attempt of a memory/disk refusal
+admission_retry_max_s = 900    # then doubling up to this
+
+# --- Backend acs-guard (the internal guard that replaced it) ------
+# The cutover edit, on an idle host, after installing the internal guard:
+#  1. delete `profile = "..."` above (a string cannot coexist with the
+#     [backend.profile] table) and add the table with guard.py's numbers;
+#  2. add `reserve_detector` to every project ("smc-ladder" for project-a,
+#     "none" otherwise) and `container_limits` to every project with
+#     containers (today's behaviour: all of them);
+#  3. `agent-compute pin-backend --backend acs-guard --evidence <file>`
+#     switches `kind` and pins the engine sha256 (it edits nothing else).
+# [backend.profile]
+# name = "beta"
+# budget_gb = 5
+# floor_gb = 1.5
+# container_cpus = 8
+# runlog_tag = "host=beta"
+# and in [projects.project-a]:
+# reserve_detector = "smc-ladder"
+# container_limits = ["step-b"]
+
+[queue]
+enabled = true
+pueue = "/srv/example/.local/bin/pueue"
+pueued = "/srv/example/.local/bin/pueued"
+group = "acs-heavy"
+
+[projects.project-a]
+roots = ["~/work/project-a"]
+case_prefix = ""
+runlog = "docs/runlog.md"
+baseline = "docs/perf/baseline-beta.json"
+inputs = [".", ":(exclude)docs", ":(exclude)spec", ":(exclude)outputs",
+          ":(exclude)site", ":(exclude)review-site", ":(exclude)artifacts",
+          ":(exclude)node_modules", ":(exclude)scratch", ":(exclude).agents"]
+env_passthrough = ["SMC_SLICE"]
+max_timeout_min = 1440
+max_threads = 8
+containers = ["step-b"]
+container_workdir = "/workspaces/project-a"
+container_provenance = ".sync_provenance.json"

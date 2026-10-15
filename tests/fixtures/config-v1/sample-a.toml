@@ -1,0 +1,98 @@
+# Synthetic pre-0.2.0 (schema 1) machine config, host "alpha": a dedicated
+# workstation with a declared host budget, an external guard path kept from
+# the retired backend, a second host reached over ssh into a WSL distro, and
+# three projects (one with records in its own tree, two with records in the
+# state dir, one without containers).  Neutral names and paths throughout; it
+# stands for a real dedicated-workstation config in the migration tests, and
+# the private tree's release tests keep the two structurally equal.
+schema = "agent-compute-config/1"
+host = "alpha"
+state_dir = "~/.local/state/agent-compute"      # local disk, not cloud-synced
+python = "/opt/homebrew/bin/python3"            # runs the runner and the guard
+
+[backend]
+kind = "acs-guard"
+# The retired external guard, run in place (the path is no effective value).
+guard = "~/tools/guard.py"
+# Verified fingerprint of that guard.
+sha256 = "d817fd4f02ac8c20b295e217915ffd338cc12952bfa1300209559816ba47b295"
+# Operator declaration: this host is dedicated compute; host budget for every
+# project, <= 48 GB; the guard floor still applies.
+dedicated_budget_gb = 48
+lock_wait_max_s = 43200        # a dispatched job waits at most 12 h for admission
+admission_retry_s = 120        # re-attempt memory/disk refusals this often
+# No guard_home: the guard's own ~/.smc-guard/lock is the lock.
+
+# Machine profile of the internal guard (the numbers of the retired guard's
+# profile of this host); dedicated_budget_gb above still decides the budget.
+[backend.profile]
+name = "alpha"
+budget_gb = 12
+floor_gb = 8
+container_cpus = 10
+runlog_tag = ""
+
+[queue]
+enabled = true
+pueue = "/opt/homebrew/bin/pueue"
+pueued = "/opt/homebrew/bin/pueued"
+group = "acs-heavy"            # the one shared heavy group; parallelism 1
+
+[hosts.beta]                   # explicit `--host beta` only; never automatic
+transport = "ssh-wsl"
+ssh = "beta"                   # an existing ssh alias (not modified)
+distro = "dev"
+agent_compute = "/srv/example/.local/bin/agent-compute"
+
+[projects.project-a]
+roots = ["~/work/project-a",                   # the project key is kept (job records)
+         "~/work/project-a-*"]
+case_prefix = ""                                # keeps the measured baseline keys
+runlog = "docs/runlog.md"                       # the project's own guard records
+baseline = "docs/perf/baseline.json"
+inputs = [".", ":(exclude)docs", ":(exclude)spec", ":(exclude)outputs",
+          ":(exclude)site", ":(exclude)review-site", ":(exclude)artifacts",
+          ":(exclude)node_modules", ":(exclude)scratch", ":(exclude).agents"]
+env_passthrough = ["SMC_SLICE"]
+max_timeout_min = 1440
+max_threads = 10
+containers = ["step-a"]
+container_workdir = "/workspaces/project-a"
+container_provenance = ".sync_provenance.json"
+reserve_detector = "smc-ladder"        # the guard applied ladder detection to every job
+container_limits = ["step-a"]          # the guard docker-updated every container job
+
+[projects.project-b]
+roots = ["~/work/project-b",
+         "~/work/project-b-*"]
+case_prefix = "pb."
+# Records stay out of this project's tree (its policy forbids dirtying other
+# trees and it has no runlog yet); status reports these paths.
+runlog = "{state}/projects/{project}/runlog-{host}.md"
+baseline = "{state}/projects/{project}/baseline-{host}.json"
+inputs = [".", ":(exclude)outputs", ":(exclude)manuscript", ":(exclude)docs",
+          ":(exclude).agents", ":(exclude)legacy"]
+env_passthrough = []
+max_timeout_min = 60           # ACS ceiling; the project's own policy still governs
+max_threads = 4
+containers = ["pb-solver"]     # image from a public registry, --init, a bind mount
+                               # of a sibling checkout
+container_workdir = "/workspaces/project-b"
+reserve_detector = "smc-ladder"        # "none" is the owners' opt-out
+container_limits = ["pb-solver"]       # the guard docker-updated every container job
+
+[projects.project-c]
+# Registered later, on operator authorization. Records stay out of the
+# repository (state dir), as for project-b.
+roots = ["~/work/project-c",
+         "~/work/project-c-*"]
+case_prefix = "pc."
+runlog = "{state}/projects/{project}/runlog-{host}.md"
+baseline = "{state}/projects/{project}/baseline-{host}.json"
+inputs = [".", ":(exclude)spec", ":(exclude).agents", ":(exclude)runs",
+          ":(exclude)reference"]
+env_passthrough = []
+max_timeout_min = 480
+max_threads = 8
+containers = []
+reserve_detector = "smc-ladder"        # "none" is the owners' opt-out

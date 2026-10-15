@@ -1,0 +1,84 @@
+# synthetic gate run (Linux host, with Docker, standard profile): the skip lines, the short summary and the final line keep the shape of a real `pytest -v -rs` run; passing tests are elided; names and paths are neutral
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /srv/example/.venv/bin/python
+rootdir: /srv/example/checkout
+collecting ... collected 1138 items
+
+tests/test_acs_guard_backend.py::test_acs_guard_config_loads_without_filling_defaults PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[kind = "acs-guard"-kind = "internal"-backend.kind must be] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[[backend.profile]\n-[backend.unused]\n-unknown keys ['unused']] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[container_cpus =-cpus =-unknown keys ['cpus']] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[kind = "acs-guard"-kind = "internal"-backend.kind must be] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[[backend.profile]\n-[backend.unused]\n-unknown keys ['unused']] PASSED [  0%]
+tests/test_children_docker.py::test_guard_py_group_kill_gap_in_dash_containers SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_a_fast_job_with_same_session_survivor_is_not_clean[plain] SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_a_fast_job_with_same_session_survivor_is_not_clean[init] SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_d1_walltime_kill_without_container_pid_is_not_clean SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_d2_cancel_without_container_pid_is_not_clean SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_f_launch_failed_after_pid_read_timeout_leaves_workload SKIPPED [ 12%]
+tests/test_container_job_evidence.py::test_guard_py_fast_job_survivor_is_not_clean_until_it_exits SKIPPED [ 21%]
+tests/test_legacy_parity.py::test_each_guard_refuses_then_waits_behind_the_other[NOTSET-old-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_each_guard_refuses_then_waits_behind_the_other[NOTSET-new-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_new_guard_takes_a_plain_flock_on_the_lock_path SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_light_runs_beside_either_holder[NOTSET-old-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_light_runs_beside_either_holder[NOTSET-new-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_each_status_reads_the_others_current_json[NOTSET-old-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_each_status_reads_the_others_current_json[NOTSET-new-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_old_guard_reclaims_a_stale_current_json_left_by_a_killed_new_guard SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_nested_pass_through_on_a_marker_alone[NOTSET] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_guard_py_inside_the_internal_guards_job_passes_through[NOTSET] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_the_internal_guard_inside_guard_py_s_job_refuses[NOTSET] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[completed] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[declared-reserve] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[dedicated-budget] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[failed] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[ladder-declared] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[ladder-refused] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[ladder-undeclared] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[lenovo-completed] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[lenovo-refused] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[light] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[light-refused] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[probe-completed] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[probe-stopped] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-floor] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-over-budget] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-unmeasured] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-workers] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[units-dense] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[walltime] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_profiles_and_constants_equal_guard_py SKIPPED [ 48%]
+tests/test_host_identity.py::test_e2_legacy_eb369eb937_identity_is_alive_from_any_tz[None] SKIPPED [ 51%]
+tests/test_host_identity.py::test_e2_legacy_eb369eb937_identity_is_alive_from_any_tz[UTC] SKIPPED [ 51%]
+tests/test_host_identity.py::test_e2_legacy_eb369eb937_identity_is_alive_from_any_tz[Europe/Paris] SKIPPED [ 51%]
+tests/test_host_identity.py::test_legacy_lstart_recycled_only_beyond_any_utc_offset SKIPPED [ 51%]
+tests/test_host_identity.py::test_e4_start_epoch_is_exact_in_the_dst_fall_back_hour SKIPPED [ 51%]
+tests/test_host_identity.py::test_e4_legacy_dst_record_is_alive_and_never_recycled SKIPPED [ 51%]
+tests/test_host_identity.py::test_e4_capture_keeps_the_exact_start_in_the_dst_hour SKIPPED [ 51%]
+tests/test_host_identity.py::test_e3_reconcile_with_tz_keeps_the_block_of_a_live_workload SKIPPED [ 52%]
+tests/test_host_identity.py::test_identity_record_shape_on_macos SKIPPED [ 55%]
+
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_children_docker.py:212: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [2] tests/test_cleanup_evidence.py:184: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_cleanup_evidence.py:315: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_cleanup_evidence.py:342: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_cleanup_evidence.py:533: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_container_job_evidence.py:445: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [2] tests/test_legacy_parity.py:240: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_legacy_parity.py:285: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [2] tests/test_legacy_parity.py:313: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [2] tests/test_legacy_parity.py:331: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_legacy_parity.py:350: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [3] tests/test_legacy_parity.py: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [19] tests/test_legacy_parity.py:555: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_legacy_parity.py:654: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [3] tests/test_host_identity.py:160: the lstart form is macOS-only
+SKIPPED [1] tests/test_host_identity.py:251: the lstart form is macOS-only
+SKIPPED [1] tests/test_host_identity.py:341: exercises the macOS ps path
+SKIPPED [1] tests/test_host_identity.py:359: exercises the macOS ps path
+SKIPPED [1] tests/test_host_identity.py:386: exercises the macOS ps path
+SKIPPED [1] tests/test_host_identity.py:473: the TZ-rendered discriminator is macOS
+SKIPPED [1] tests/test_host_identity.py:914: the lstart form is macOS-only
+================ 1091 passed, 47 skipped in 1499.67s (0:24:59) =================
+EXIT 0

@@ -1,0 +1,158 @@
+# synthetic gate run (macOS host, Docker hidden, standard profile): the skip lines, the short summary and the final line keep the shape of a real `pytest -v -rs` run; passing tests are elided; names and paths are neutral
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /srv/example/.venv/bin/python
+rootdir: /srv/example/checkout
+collecting ... collected 1138 items
+
+tests/test_acs_guard_backend.py::test_acs_guard_config_loads_without_filling_defaults PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[kind = "acs-guard"-kind = "internal"-backend.kind must be] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[[backend.profile]\n-[backend.unused]\n-unknown keys ['unused']] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[container_cpus =-cpus =-unknown keys ['cpus']] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[kind = "acs-guard"-kind = "internal"-backend.kind must be] PASSED [  0%]
+tests/test_acs_guard_backend.py::test_bad_acs_guard_config_fails_closed[[backend.profile]\n-[backend.unused]\n-unknown keys ['unused']] PASSED [  0%]
+tests/test_acs_guard_containers.py::test_same_session_survivor_blocks_and_reconcile_resolves_the_marker SKIPPED [  5%]
+tests/test_acs_guard_containers.py::test_walltime_kill_stops_the_whole_container_job SKIPPED [  6%]
+tests/test_acs_guard_containers.py::test_c3_env_i_leader_with_an_unread_pid_file_is_never_cleaned SKIPPED [  6%]
+tests/test_children_docker.py::test_container_job_succeeds[direct] SKIPPED [  6%]
+tests/test_children_docker.py::test_container_job_succeeds[queue] SKIPPED [  6%]
+tests/test_children_docker.py::test_container_cancel_stops_the_in_container_workload[direct] SKIPPED [  6%]
+tests/test_children_docker.py::test_container_cancel_stops_the_in_container_workload[queue] SKIPPED [  6%]
+tests/test_children_docker.py::test_orphaned_docker_exec_regression[direct] SKIPPED [  7%]
+tests/test_children_docker.py::test_orphaned_docker_exec_regression[queue] SKIPPED [  7%]
+tests/test_children_docker.py::test_guard_death_on_container_path_blocks[direct] SKIPPED [  7%]
+tests/test_children_docker.py::test_guard_death_on_container_path_blocks[queue] SKIPPED [  7%]
+tests/test_children_docker.py::test_guard_py_group_kill_gap_in_dash_containers SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_a_fast_job_with_same_session_survivor_is_not_clean[plain] SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_a_fast_job_with_same_session_survivor_is_not_clean[init] SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_a_natural_race_without_shim SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_baseline_b_fast_job_without_descendants_completes SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_limitation_c_setsid_escape_keeping_the_marker_is_caught SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_d1_walltime_kill_without_container_pid_is_not_clean SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_d2_cancel_without_container_pid_is_not_clean SKIPPED [  7%]
+tests/test_cleanup_evidence.py::test_desired_e_reconcile_keeps_block_while_in_container_survivor_lives[completed] SKIPPED [  8%]
+tests/test_cleanup_evidence.py::test_desired_e_reconcile_keeps_block_while_in_container_survivor_lives[killed-walltime] SKIPPED [  8%]
+tests/test_cleanup_evidence.py::test_desired_f_launch_failed_after_pid_read_timeout_leaves_workload SKIPPED [ 12%]
+tests/test_cleanup_evidence.py::test_desired_i_epoch_fallback_never_calls_a_live_leader_recycled SKIPPED [ 12%]
+tests/test_cleanup_evidence.py::test_desired_ii_renamed_container_is_not_called_replaced SKIPPED [ 12%]
+tests/test_container_exec_workdir.py::test_live_scan_ignores_a_blocking_cwd_and_pythonpath SKIPPED [ 15%]
+tests/test_container_exec_workdir.py::test_live_alarm_ends_a_blocked_helper_with_142 SKIPPED [ 15%]
+tests/test_container_job_evidence.py::test_fast_job_without_descendants_succeeds_with_scan_evidence SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_reconcile_resolves_fast_job_block_on_scan_evidence[completed-succeeded] SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_reconcile_resolves_fast_job_block_on_scan_evidence[running-unknown] SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_guard_py_fast_job_survivor_is_not_clean_until_it_exits SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_terminate_signals_only_marker_processes SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_unreadable_environ_after_the_job_is_unverifiable SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_unreadable_environ_before_the_job_is_ignored SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_successor_never_starts_while_survivor_lives SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_limitation_env_scrubbed_setsid_descendant_escapes SKIPPED [ 21%]
+tests/test_container_job_evidence.py::test_name_rebound_live_survivor_is_found_and_terminated SKIPPED [ 21%]
+tests/test_g2a_names.py::test_the_scan_script_matches_any_listed_name[MY_JOB-markers0-has-marker] SKIPPED [ 38%]
+tests/test_g2a_names.py::test_the_scan_script_matches_any_listed_name[SMC_GUARD_JOB-markers1-has-marker] SKIPPED [ 38%]
+tests/test_g2a_names.py::test_the_scan_script_matches_any_listed_name[MY_JOB-markers2-no-marker] SKIPPED [ 38%]
+tests/test_legacy_parity.py::test_each_guard_refuses_then_waits_behind_the_other[NOTSET-old-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_each_guard_refuses_then_waits_behind_the_other[NOTSET-new-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_new_guard_takes_a_plain_flock_on_the_lock_path SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_light_runs_beside_either_holder[NOTSET-old-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_light_runs_beside_either_holder[NOTSET-new-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_each_status_reads_the_others_current_json[NOTSET-old-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_each_status_reads_the_others_current_json[NOTSET-new-holds] SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_old_guard_reclaims_a_stale_current_json_left_by_a_killed_new_guard SKIPPED [ 46%]
+tests/test_legacy_parity.py::test_nested_pass_through_on_a_marker_alone[NOTSET] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_guard_py_inside_the_internal_guards_job_passes_through[NOTSET] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_the_internal_guard_inside_guard_py_s_job_refuses[NOTSET] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[completed] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[declared-reserve] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[dedicated-budget] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[failed] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[ladder-declared] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[ladder-refused] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[ladder-undeclared] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[lenovo-completed] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[lenovo-refused] SKIPPED [ 47%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[light] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[light-refused] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[probe-completed] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[probe-stopped] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-floor] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-over-budget] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-unmeasured] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[refused-workers] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[units-dense] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_same_job_same_outcome_record_baseline_and_runlog[walltime] SKIPPED [ 48%]
+tests/test_legacy_parity.py::test_profiles_and_constants_equal_guard_py SKIPPED [ 48%]
+tests/test_guard_lifecycle.py::test_container_cancel_kills_the_whole_in_container_group_under_dash SKIPPED [ 49%]
+tests/test_guard_lifecycle.py::test_sigterm_during_the_container_pid_discovery_stops_the_job SKIPPED [ 49%]
+tests/test_guard_lifecycle.py::test_a_killed_guard_leaves_a_marker_for_its_container_workload SKIPPED [ 49%]
+tests/test_guard_lifecycle.py::test_acs_cancel_of_an_internal_guard_container_job_kills_its_children SKIPPED [ 49%]
+tests/test_guard_lifecycle.py::test_container_limits_change_only_with_container_limits SKIPPED [ 49%]
+tests/test_internal_guard.py::test_container_hog_is_killed_by_its_memory_cap SKIPPED [ 63%]
+tests/test_internal_guard.py::test_container_job_pauses_and_resumes SKIPPED [ 63%]
+tests/test_internal_guard.py::test_container_job_runs_in_its_workdir_with_the_job_env SKIPPED [ 63%]
+tests/test_probe_and_nested.py::test_container_probe_is_stopped_and_clean[acs-guard] SKIPPED [ 71%]
+tests/test_review_cleanup_evidence.py::test_b1_scrubbed_child_in_orphaned_session_is_not_clean SKIPPED [ 74%]
+tests/test_review_cleanup_evidence.py::test_b1_scrubbed_child_through_the_queue SKIPPED [ 74%]
+tests/test_review_cleanup_evidence.py::test_b2_zombie_main_thread_alone_is_not_gone SKIPPED [ 74%]
+tests/test_review_cleanup_evidence.py::test_b2_terminate_kills_zombie_leader_before_resolving SKIPPED [ 74%]
+tests/test_review_cleanup_evidence.py::test_s2_submission_records_daemon_and_queued_job_refuses_mismatch SKIPPED [ 74%]
+tests/test_review_cleanup_evidence.py::test_b2_linux_host_path_start_info_sees_live_threads SKIPPED [ 74%]
+tests/test_review_cleanup_evidence.py::test_d4_leader_dropping_the_marker_is_never_called_clean SKIPPED [ 76%]
+tests/test_review_cleanup_evidence.py::test_b2_linux_host_zombie_main_thread_is_a_live_member SKIPPED [ 76%]
+
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_acs_guard_containers.py:48: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_acs_guard_containers.py:83: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_acs_guard_containers.py:129: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_children_docker.py:148: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_children_docker.py:157: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_children_docker.py:169: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_children_docker.py:195: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_children_docker.py:212: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_cleanup_evidence.py:184: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:220: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:246: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:275: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:315: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:342: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_cleanup_evidence.py:394: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:533: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:565: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_cleanup_evidence.py:599: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_exec_workdir.py:306: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_exec_workdir.py:343: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:400: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [2] tests/test_container_job_evidence.py:420: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:445: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:477: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:508: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:529: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:542: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:569: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_container_job_evidence.py:594: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [3] tests/test_g2a_names.py:456: Linux host only: runs the in-container scan on the host's own /proc
+SKIPPED [2] tests/test_legacy_parity.py:240: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_legacy_parity.py:285: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [2] tests/test_legacy_parity.py:313: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [2] tests/test_legacy_parity.py:331: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_legacy_parity.py:350: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [3] tests/test_legacy_parity.py: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [19] tests/test_legacy_parity.py:555: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_legacy_parity.py:654: legacy profile only (ACS_TEST_LEGACY_GUARD=<guard.py>): a historical comparison with an external guard.py
+SKIPPED [1] tests/test_guard_lifecycle.py:134: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_guard_lifecycle.py:344: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_guard_lifecycle.py:423: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_guard_lifecycle.py:534: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_guard_lifecycle.py:573: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_internal_guard.py:648: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_internal_guard.py:677: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_internal_guard.py:708: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_probe_and_nested.py:207: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:76: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:111: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:200: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:226: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:302: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:322: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:579: docker or image python:3.11.6-slim-bookworm missing
+SKIPPED [1] tests/test_review_cleanup_evidence.py:618: Linux host only: exercises procs.group_members/host_survivors on the host's own /proc (runs natively on the Lenovo WSL host; macOS has no per-thread /proc view)
+================= 1051 passed, 87 skipped in 960.87s (0:16:00) =================
+EXIT 0

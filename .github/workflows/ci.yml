@@ -1,0 +1,39 @@
+# Public CI: one workflow, GitHub-hosted runners only, read-only token, no
+# secrets. It runs tools/ci.sh, which you can run yourself from a clone:
+# Pueue 4.0.4 by pinned checksum, pytest at pinned versions with hashes, the
+# standard test profile (container tests use the public image pinned by
+# digest), the skip accounting (must be "untagged 0" and "consistent") and
+# tools/skill_check.py. It does not cover macOS Docker Desktop or a real
+# two-host installation.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: standard profile (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.14"]
+    steps:
+      # actions/checkout v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      # actions/setup-python v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: tools/ci.sh
+        env:
+          ACS_TEST_PULL: "1"
+        run: tools/ci.sh

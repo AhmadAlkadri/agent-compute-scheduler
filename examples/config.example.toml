@@ -1,0 +1,75 @@
+# agent-compute machine config (schema agent-compute-config/2): a fresh
+# install with neutral names.  Copy it to ~/.config/agent-compute/config.toml
+# (mode 0600; `python3 install.py install --config-from <this file>` does),
+# then edit the values marked EDIT.  Unknown keys are errors.
+schema = "agent-compute-config/2"
+host = "build-01"                                # EDIT: this machine's label
+state_dir = "~/.local/state/agent-compute"      # local disk, not cloud-synced
+python = "python3"                              # runs the runner and the guard
+
+[backend]
+kind = "acs-guard"
+# The pinned sha256 of the internal guard engine of the installed version.
+# The operator writes it with `agent-compute pin-backend --evidence <the
+# committed full-suite gate file> --authorized-by "<who, when, what>"`;
+# until then every submit is refused.
+sha256 = "0000000000000000000000000000000000000000000000000000000000000000"
+# The guard home (its lock, current.json, inflight.json) defaults to
+# <state_dir>/guard.  Set it only to share the lock with another guard:
+# guard_home = "{state}/guard"
+# Job-marker aliases exported beside ACS_JOB_MARKER (default none), and the
+# legacy workload variable names (default off):
+# marker_aliases = []
+# legacy_workload_env = false
+lock_wait_max_s = 43200        # a dispatched job waits at most 12 h for admission
+admission_retry_s = 120        # first re-attempt of a memory/disk refusal
+admission_retry_max_s = 900    # then doubling up to this
+
+[backend.profile]              # EDIT: this machine's numbers
+name = "build-01"
+budget_gb = 8                  # host job memory budget
+floor_gb = 4                   # host available-memory floor
+container_cpus = 6             # CPU quota of a container job
+runlog_tag = ""                # none
+
+[queue]
+enabled = true
+pueue = "pueue"                # EDIT: absolute paths are safer
+pueued = "pueued"
+group = "acs-heavy"            # the one shared heavy group; parallelism 1
+
+# A remote route (`--host other`; `agent-compute hosts` shows its state).
+# Not named like this host; no two entries on one route.
+# [hosts.other]
+# transport = "ssh"
+# ssh = "other"
+# agent_compute = "/home/me/.local/bin/agent-compute"
+# connect_timeout_s = 10       # ssh ConnectTimeout (default 10)
+# call_timeout_s = 120         # every call to it (default: 30 s probe, 900 s call)
+
+[projects.my-project]          # EDIT: one table per project
+roots = ["~/src/my-project", "~/src/my-project-*"]
+case_prefix = "mp."
+# records default to the state dir:
+# runlog = "{state}/projects/{project}/runlog-{host}.md"
+# baseline = "{state}/projects/{project}/baseline-{host}.json"
+inputs = ["."]
+env_passthrough = []
+max_timeout_min = 120
+max_threads = 4
+containers = []                # Docker containers the project may submit into (--container C);
+                               # each must be running. With a non-empty list, both keys below apply:
+container_limits = []          # REQUIRED with containers: the containers whose memory/CPU limits
+                               # the guard applies per job with `docker update`, or [] for none
+# container_workdir = "/work"  # REQUIRED for a container job unless every submit passes
+                               # --container-workdir: the working directory inside the container
+reserve_detector = "none"      # the default; "smc-ladder" is the shipped example of a
+                               # project-specific detector (ladder configs)
+# Where the project may run (default: this host only).  With another host
+# listed, a submit names one with --host, or ACS picks the listed host with
+# the fewest unfinished jobs (automatic placement; experimental):
+# hosts = ["laptop", "other"]
+# [projects.my-project.on.other]
+# cwd = "/home/me/src/my-project"   # the checkout there (absolute)
+# container = "my-box"              # optional
+# container_workdir = "/work"       # optional
